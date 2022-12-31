@@ -1,0 +1,60 @@
+@page "/signup";
+@using Blongo.Models.dbConnectivity;
+
+<PageTitle>Sign Up</PageTitle>
+<h1>Sign Up</h1>
+<br>
+<form action="signup">
+
+    <p><input type="text" @bind="fname" required placeholder="first name" size="10"> <input type="text" @bind="lname"
+            required placeholder="last name" size="10"></p>
+    <p><input type="text" @bind="user_name" required placeholder="username" size="26"></p>
+    <p>
+        <font size="1" font-color="red">@result</font>
+    </p>
+    <p><input type="text" @bind="nyn" required placeholder="password" size="26"></p>
+    <p><input type="date" @bind="dob" required placeholder="age">
+
+        <select name="Gender" id="gender" @bind="genderValue">
+            <option value="0" selected disabled hidden>Gender</option>
+            <option value="1">Male</option>
+            <option value="2">Female</option>
+        </select>
+    </p>
+    <p><input type="button" @onclick="signUpClient" value="sign-up"></p>
+</form>
+
+@code {
+    private string fname = "";
+    private string lname = "";
+    private string user_name = "";
+    private string nyn = "";
+    private int? age = null;
+    private string? result;
+
+    private int genderValue;
+    private string gender = "";
+
+    private DateTime dob;
+
+
+
+
+    private void signUpClient()
+    {
+        if (user_name == "" || nyn == "" || age > 99 || age < 5 || genderValue == 3)
+        {
+            return;
+        }
+
+        if (genderValue == 1)
+            gender = "male";
+        if (genderValue == 2)
+            gender = "female";
+
+        dbConnectivity db = new dbConnectivity();
+        result = db.signUp(fname, lname, gender, user_name, dob, age, nyn);
+
+    }
+
+}
